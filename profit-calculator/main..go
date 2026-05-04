@@ -12,9 +12,9 @@ func main() {
 
 	ebt, profit, ratio := calculate(revenue, expenses, taxRate)
 
-	fmt.Println("Earnings Before Tax:", ebt)
-	fmt.Println("Profit:", profit)
-	fmt.Println("Ratio:", ratio)
+	fmt.Printf("Earnings Before Tax: %0.2f\n", ebt)
+	fmt.Printf("Profit: %0.2f\n", profit)
+	fmt.Printf("Ratio: %0.2f", ratio)
 }
 
 func getUserInput(text string) float64 {
