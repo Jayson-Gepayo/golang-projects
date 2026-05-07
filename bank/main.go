@@ -39,6 +39,11 @@ func main() {
 		var widthdrawAmount float64
 		fmt.Print("withdraw amount: ")
 		fmt.Scan(&widthdrawAmount)
+
+		if widthdrawAmount <= 0 {
+			fmt.Println("please enter a valid deposit amount")
+			return
+		}
 		if widthdrawAmount > accountBalance {
 			fmt.Println("inefficient amount")
 			fmt.Println("your balance is:", accountBalance)
