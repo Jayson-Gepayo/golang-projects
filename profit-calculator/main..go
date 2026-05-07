@@ -1,28 +1,18 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 )
 
-const revenueFile = "revenue.txt"
-const expensesFile = "expenses.txt"
-const taxRateFile = "taxRate.txt"
-const ratioFile = "ratio.txt"
+const resultsFile = "results.txt"
 
-func writeToFile(revenue, expenses, tax, ratio float64) {
+func writeToFile(revenue, profit, ratio float64) {
 
-	revenueText := fmt.Sprint(revenue)
-	os.WriteFile(revenueFile, []byte(revenueText), 0644)
+	results := fmt.Sprintf("EBT: %.2f\nProfit: %.2f\nRatio: %.3f\n", revenue, profit, ratio)
+	os.WriteFile(resultsFile, []byte(results), 0644)
 
-	expensesText := fmt.Sprint(expenses)
-	os.WriteFile(expensesFile, []byte(expensesText), 0644)
-
-	taxRate := fmt.Sprint(tax)
-	os.WriteFile(taxRateFile, []byte(taxRate), 0644)
-
-	ratioText := fmt.Sprint(ratio)
-	os.WriteFile(ratioFile, []byte(ratioText), 0644)
 }
 
 func main() {
@@ -38,19 +28,22 @@ func main() {
 		fmt.Scan(&choice)
 
 		if choice == 1 {
-			revenue := getUserInput("Revenue: ")
-			if revenue <= 0 {
-				fmt.Println("Please enter valid revenue")
+			revenue, err := getUserInput("Revenue: ")
+
+			if err != nil {
+				fmt.Println(err)
 				continue
 			}
-			expenses := getUserInput("Expenses: ")
-			if expenses <= 0 {
-				fmt.Println("Please valid expenses")
+
+			expenses, err := getUserInput("Expenses: ")
+			if err != nil {
+				fmt.Println(err)
 				continue
 			}
-			taxRate := getUserInput("Tax Rate: ")
-			if taxRate <= 0 {
-				fmt.Println("Please valid tax rate")
+
+			taxRate, err := getUserInput("Tax Rate: ")
+			if err != nil {
+				fmt.Println(err)
 				continue
 			}
 
@@ -59,7 +52,7 @@ func main() {
 			fmt.Printf("Earnings Before Tax: %0.2f\n", ebt)
 			fmt.Printf("Profit: %0.2f\n", profit)
 			fmt.Printf("Ratio: %0.2f \n\n", ratio)
-			writeToFile(ebt, profit, taxRate, ratio)
+			writeToFile(ebt, profit, ratio)
 		} else {
 			fmt.Println("Goodbye")
 			fmt.Println("Thank you")
@@ -68,11 +61,14 @@ func main() {
 	}
 }
 
-func getUserInput(text string) float64 {
+func getUserInput(text string) (float64, error) {
 	var userInput float64
 	fmt.Print(text)
 	fmt.Scan(&userInput)
-	return userInput
+	if userInput <= 0 {
+		return 0, errors.New("Value must be Positive")
+	}
+	return userInput, nil
 }
 
 func calculate(revenue, expenses, taxRate float64) (float64, float64, float64) {
