@@ -25,6 +25,12 @@ func main() {
 		var depositAmount float64
 		fmt.Print("deposit amount: ")
 		fmt.Scan(&depositAmount)
+
+		if depositAmount <= 0 {
+			fmt.Println("please enter a valid deposit amount")
+			return
+		}
+
 		accountBalance += depositAmount
 
 		fmt.Println("Balance updated! New amount:", accountBalance)
@@ -43,6 +49,7 @@ func main() {
 		fmt.Println("Balance updated! New amount:", accountBalance)
 
 	} else {
+		fmt.Println("Goodbye")
 		return
 	}
 
