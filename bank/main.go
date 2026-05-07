@@ -1,11 +1,31 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+	"strconv"
+)
+
+const balanceFile = "balance.txt"
+
+func writeBalanceToFile(balance float64) {
+
+	balanceText := fmt.Sprint(balance)
+	os.WriteFile(balanceFile, []byte(balanceText), 0644)
+}
+
+func getBalanceFromFile() float64 {
+	data, _ := os.ReadFile(balanceFile)
+	balanceData := string(data)
+	formattedBalanceData, _ := strconv.ParseFloat(balanceData, 64)
+
+	return formattedBalanceData
+}
 
 func main() {
 
 	var choice int
-	var accountBalance float64 = 10000
+	var accountBalance float64 = getBalanceFromFile()
 	fmt.Println("WELCOME TO GOBANK")
 
 	for {
@@ -19,9 +39,11 @@ func main() {
 		fmt.Scan(&choice)
 		fmt.Println("Youv'e Choice: ", choice)
 
-		if choice == 1 {
+		switch choice {
+		case 1:
+			getBalanceFromFile()
 			fmt.Println("your balance is: ", accountBalance)
-		} else if choice == 2 {
+		case 2:
 			var depositAmount float64
 			fmt.Print("deposit amount: ")
 			fmt.Scan(&depositAmount)
@@ -32,10 +54,9 @@ func main() {
 			}
 
 			accountBalance += depositAmount
-
 			fmt.Println("Balance updated! New amount:", accountBalance)
-
-		} else if choice == 3 {
+			writeBalanceToFile(accountBalance)
+		case 3:
 			var widthdrawAmount float64
 			fmt.Print("withdraw amount: ")
 			fmt.Scan(&widthdrawAmount)
@@ -50,16 +71,13 @@ func main() {
 				fmt.Println("your balance is:", accountBalance)
 				continue
 			}
-			accountBalance -= widthdrawAmount
 
-		} else {
+			accountBalance -= widthdrawAmount
+			writeBalanceToFile(accountBalance)
+		default:
 			fmt.Println("Goodbye")
-			break
+			fmt.Println("Thank you for Choosing our bank")
+			return
 		}
 	}
-	fmt.Println("Thank you for Choosing our bank")
 }
-
-// func checkBalance() {
-
-// }
