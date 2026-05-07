@@ -10,7 +10,6 @@ func main() {
 
 	for {
 		fmt.Println("What do you want to do")
-		fmt.Println("What do you want to do")
 		fmt.Println("1. Check Balance")
 		fmt.Println("2. Deposit")
 		fmt.Println("3. Withdraw")
@@ -29,7 +28,7 @@ func main() {
 
 			if depositAmount <= 0 {
 				fmt.Println("please enter a valid deposit amount")
-				return
+				continue
 			}
 
 			accountBalance += depositAmount
@@ -41,21 +40,24 @@ func main() {
 			fmt.Print("withdraw amount: ")
 			fmt.Scan(&widthdrawAmount)
 
+			if widthdrawAmount <= 0 {
+				fmt.Println("please enter a valid deposit amount")
+				continue
+			}
+
 			if widthdrawAmount > accountBalance {
 				fmt.Println("inefficient amount")
 				fmt.Println("your balance is:", accountBalance)
-				return
+				continue
 			}
 			accountBalance -= widthdrawAmount
 
-			fmt.Println("Balance updated! New amount:", accountBalance)
-
 		} else {
 			fmt.Println("Goodbye")
-			return
+			break
 		}
 	}
-
+	fmt.Println("Thank you for Choosing our bank")
 }
 
 // func checkBalance() {
